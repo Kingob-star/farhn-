@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jalur Internet Nusantara - Penyedia Layanan Internet Cepat & Terpercaya</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            accent: '#06b6d4',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #1e3a8a, #0f172a);
+        }
+        .pulse-glow {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Top Bar Notice -->
+    <div class="bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-600 text-white text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <span><i class="fa-solid fa-headset mr-1"></i> Layanan Pelanggan 24/7</span>
+                <span class="hidden sm:inline"><i class="fa-solid fa-bolt mr-1 text-yellow-300"></i> Jaringan Fiber Optic 100% Nusantara</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="bg-blue-800/80 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide border border-blue-400/30">PROJEK TEKNIK KOMPUTER & JARINGAN (TKJ)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-wifi text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900 block leading-tight">JALUR INTERNET</span>
+                        <span class="text-xs font-semibold text-blue-600 tracking-wider uppercase block">NUSANTARA</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 font-medium text-slate-700 text-sm">
+                    <a href="#beranda" class="hover:text-blue-600 transition-colors">Beranda</a>
+                    <a href="#tentang" class="hover:text-blue-600 transition-colors">Tentang Bisnis</a>
+                    <a href="#layanan" class="hover:text-blue-600 transition-colors">Layanan</a>
+                    <a href="#produk" class="hover:text-blue-600 transition-colors">Produk Paket</a>
+                    <a href="#speedtest" class="hover:text-blue-600 transition-colors">Tes Kecepatan</a>
+                    <a href="#kontak" class="hover:text-blue-600 transition-colors">Kontak</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:flex items-center">
+                    <a href="#produk" class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Langganan Sekarang
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#beranda" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Beranda</a>
+            <a href="#tentang" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Tentang Bisnis</a>
+            <a href="#layanan" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Layanan</a>
+            <a href="#produk" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Produk Paket</a>
+            <a href="#speedtest" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Tes Kecepatan</a>
+            <a href="#kontak" class="block px-3 py-2 rounded-md font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-600">Kontak</a>
+            <a href="#produk" class="block text-center w-full bg-blue-600 text-white py-2.5 rounded-xl font-semibold shadow">Langganan Sekarang</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="relative hero-gradient text-white pt-16 pb-28 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:24px_24px] opacity-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-300 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
+                        <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+                        Jaringan Fiber Optic Generasi Baru
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+                        Koneksi Internet Cepat, <span class="bg-gradient-to-r from-cyan-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent">Stabil Tanpa Batas</span>
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed mx-auto lg:mx-0">
+                        Jalur Internet Nusantara menghadirkan akses internet broadband ultra-cepat, ketersediaan tinggi, dan biaya paling terjangkau untuk rumah, sekolah, UMKM, dan korporasi.
+                    </p>
+                    
+                    <!-- Call to Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                        <a href="#produk" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-cyan-500/30 transition-all transform hover:-translate-y-1 text-center">
+                            <i class="fa-solid fa-rocket mr-2"></i> Lihat Paket Internet
+                        </a>
+                        <a href="#kontak" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl backdrop-blur-md transition-all text-center">
+                            <i class="fa-solid fa-headset mr-2"></i> Konsultasi Gratis
+                        </a>
+                    </div>
+
+                    <!-- Highlights Badge -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-slate-700/60 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-cyan-400">99.9%</p>
+                            <p class="text-xs text-slate-400 mt-1">SLA Uptime Network</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-blue-400">100%</p>
+                            <p class="text-xs text-slate-400 mt-1">Fiber Optic Pure</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-emerald-400">24/7</p>
+                            <p class="text-xs text-slate-400 mt-1">Dukungan Teknis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Graphic Card -->
+                <div class="lg:col-span-5">
+                    <div class="relative bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl pulse-glow">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-700/80 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded border border-cyan-800">Status Router: ONLINE</span>
+                        </div>
+
+                        <div class="space-y-5 font-mono text-sm">
+                            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-700 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-arrow-down text-emerald-400 text-lg"></i>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Kecepatan Download</p>
+                                        <p class="text-lg font-bold text-white">Up to 100 Mbps</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-emerald-400 font-bold bg-emerald-950 px-2 py-1 rounded">Super Fast</span>
+                            </div>
+
+                            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-700 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-arrow-up text-cyan-400 text-lg"></i>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Kecepatan Upload</p>
+                                        <p class="text-lg font-bold text-white">Simetris 1:1</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-cyan-400 font-bold bg-cyan-950 px-2 py-1 rounded">Ultra Low Latency</span>
+                            </div>
+
+                            <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-700 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-chart-line text-yellow-400 text-lg"></i>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Ping Latensi</p>
+                                        <p class="text-lg font-bold text-white">&lt; 5 ms (Lokal)</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-yellow-400 font-bold bg-yellow-950 px-2 py-1 rounded">Anti Lag</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-700/80 text-center">
+                            <p class="text-xs text-slate-400">
+                                <i class="fa-solid fa-shield-halved text-blue-400 mr-1"></i> Dikelola oleh Tim Ahli Komputer & Jaringan (TKJ)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tentang Bisnis Section -->
+    <section id="tentang" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-blue-600 font-bold uppercase tracking-wider text-xs bg-blue-50 px-3 py-1 rounded-full border border-blue-200">Profil Perusahaan</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3">Tentang Jalur Internet Nusantara</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed">
+                    Jalur Internet Nusantara (JIN) adalah penyedia layanan internet berbasis infrastruktur jaringan Fiber Optic & Wireless modern. Berawal dari dedikasi dan keahlian di bidang Teknik Komputer dan Jaringan (TKJ), kami berkomitmen untuk pemerataan akses digital berkualitas tinggi di seluruh penjuru pelosok Nusantara.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200/80 hover:border-blue-300 transition-all hover:shadow-lg">
+                    <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-md shadow-blue-500/30">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Visi Kami</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Menjadi tulang punggung konektivitas digital terdepan di Indonesia yang handal, cepat, serta dapat dijangkau oleh semua lapisan masyarakat dan pelaku usaha.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200/80 hover:border-blue-300 transition-all hover:shadow-lg">
+                    <div class="w-14 h-14 bg-cyan-600 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-md shadow-cyan-500/30">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Infrastruktur Unggul</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Menggunakan teknologi router Mikrotik enterprise, topologi GPON Fiber to the Home (FTTH), serta manajemen bandwidth pintar untuk kestabilan optimal.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200/80 hover:border-blue-300 transition-all hover:shadow-lg">
+                    <div class="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-md shadow-emerald-500/30">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Keahlian Standar TKJ</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Seluruh perancangan, pengkabelan FO, krimp konektor, routing, hingga troubleshooting dikerjakan oleh teknisi bersertifikat dan berkompetensi TKJ.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layanan Bisnis Section -->
+    <section id="layanan" class="py-20 bg-slate-900 text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-cyan-400 font-bold uppercase tracking-wider text-xs bg-cyan-950 px-3 py-1 rounded-full border border-cyan-800">Layanan Komprehensif</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold mt-3">Layanan Yang Kami Sediakan</h2>
+                <p class="text-slate-400 mt-4 leading-relaxed">
+                    Kami menyediakan ekosistem solusi jaringan terlengkap untuk memenuhi kebutuhan personal, bisnis rumah tangga, hingga perusahaan skala besar.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-house-signal"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Internet Broadband Rumah (FTTH)</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Layanan internet unlimited tanpa batas kuota (Tanpa FUP) langsung menggunakan kabel Fiber Optic ke dalam rumah Anda.
+                    </p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-cyan-500/10 text-cyan-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-cyan-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-building-user"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Internet Dedicated Bisnis</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Koneksi khusus dengan rasio simetris 1:1 tanpa bagi bandwidth. Dilengkapi Service Level Agreement (SLA) jaminan uptime 99.9%.
+                    </p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Wi-Fi Managed & Vouchering</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Solusi hotspot area publik untuk kafe, warkop, dan sekolah dengan sistem captive portal login voucher tersistem.
+                    </p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-purple-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Instalasi & Pengkabelan LAN/FO</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Jasa penarikan kabel Fiber Optic, kabel UTP Cat6, Splicing FO, pemasangan ODP/OTB, dan perapihan server rack.
+                    </p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Konfigurasi Mikrotik & Router</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Set up Firewall, Management Bandwidth Queues, Load Balancing multi-ISP, VPN Server, dan keamanan jaringan.
+                    </p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-rose-500/10 text-rose-400 rounded-xl flex items-center justify-center text-xl mb-5 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Maintenance & Support 24/7</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Pemeliharaan rutin jaringan, penanganan ganguan ketersediaan teknisi on-site cepat, dan monitoring jaringan.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produk Bisnis & Paket Internet Section -->
+    <section id="produk" class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-blue-600 font-bold uppercase tracking-wider text-xs bg-blue-100 px-3 py-1 rounded-full border border-blue-200">Pilihan Paket Paling Hemat</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3">Produk Paket Internet Nusantara</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed">
+                    Pilih paket internet sesuai kebutuhan kecepatan dan jumlah perangkat di rumah atau tempat usaha Anda. Tanpa FUP, Tanpa Batasan Kuota!
+                </p>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                
+                <!-- Package 1: 5 Mbps -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 relative">
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Paket Basic</div>
+                        <h3 class="text-2xl font-black text-slate-900">5 Mbps</h3>
+                        <p class="text-xs text-slate-500 mt-1">Cocok untuk 1 - 2 Perangkat</p>
+                        
+                        <div class="my-6">
+                            <span class="text-3xl font-extrabold text-blue-600">Rp 100.000</span>
+                            <span class="text-slate-500 text-xs font-medium">/ bulan</span>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Unlimited Tanpa FUP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Speed Up to 5 Mbps</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Ideal Chat & Social Media</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Gratis Modem Wi-Fi</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Support Teknis TKJ</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="orderPackage('Paket Basic 5 Mbps', '100.000')" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors text-center">
+                        Pilih Paket
+                    </button>
+                </div>
+
+                <!-- Package 2: 10 Mbps -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 relative">
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Paket Home</div>
+                        <h3 class="text-2xl font-black text-slate-900">10 Mbps</h3>
+                        <p class="text-xs text-slate-500 mt-1">Cocok untuk 3 - 5 Perangkat</p>
+                        
+                        <div class="my-6">
+                            <span class="text-3xl font-extrabold text-blue-600">Rp 150.000</span>
+                            <span class="text-slate-500 text-xs font-medium">/ bulan</span>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Unlimited Tanpa FUP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Speed Up to 10 Mbps</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Streaming YouTube SD/HD</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Gratis Modem Wi-Fi</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Support Teknis TKJ</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="orderPackage('Paket Home 10 Mbps', '150.000')" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors text-center">
+                        Pilih Paket
+                    </button>
+                </div>
+
+                <!-- Package 3: 20 Mbps (POPULAR) -->
+                <div class="bg-white rounded-2xl border-2 border-blue-600 p-6 flex flex-col justify-between shadow-lg hover:shadow-2xl transition-all duration-300 relative scale-105 z-10">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow">
+                        Paling Populer
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2 mt-1">Paket Family Extra</div>
+                        <h3 class="text-2xl font-black text-slate-900">20 Mbps</h3>
+                        <p class="text-xs text-slate-500 mt-1">Cocok untuk 5 - 8 Perangkat</p>
+                        
+                        <div class="my-6">
+                            <span class="text-3xl font-extrabold text-blue-600">Rp 200.000</span>
+                            <span class="text-slate-500 text-xs font-medium">/ bulan</span>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Unlimited Tanpa FUP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Speed Up to 20 Mbps</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Streaming Full HD & Zoom</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Modem Wi-Fi Dual Band</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Prioritas Support 24/7</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="orderPackage('Paket Family Extra 20 Mbps', '200.000')" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-3 rounded-xl text-sm shadow-md transition-all text-center">
+                        Pilih Paket Ini
+                    </button>
+                </div>
+
+                <!-- Package 4: 50 Mbps -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 relative">
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Paket Super Pro</div>
+                        <h3 class="text-2xl font-black text-slate-900">50 Mbps</h3>
+                        <p class="text-xs text-slate-500 mt-1">Cocok untuk 8 - 12 Perangkat</p>
+                        
+                        <div class="my-6">
+                            <span class="text-3xl font-extrabold text-blue-600">Rp 300.000</span>
+                            <span class="text-slate-500 text-xs font-medium">/ bulan</span>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Unlimited Tanpa FUP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Speed Up to 50 Mbps</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Smooth 4K Streaming & Gaming</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> High Spec Fiber Router</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Teknisi Khusus On-Site</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="orderPackage('Paket Super Pro 50 Mbps', '300.000')" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors text-center">
+                        Pilih Paket
+                    </button>
+                </div>
+
+                <!-- Package 5: 100 Mbps -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 relative">
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Paket Sultan Ultimate</div>
+                        <h3 class="text-2xl font-black text-slate-900">100 Mbps</h3>
+                        <p class="text-xs text-slate-500 mt-1">Cocok untuk Multi Perangkat / Warkop</p>
+                        
+                        <div class="my-6">
+                            <span class="text-3xl font-extrabold text-blue-600">Rp 500.000</span>
+                            <span class="text-slate-500 text-xs font-medium">/ bulan</span>
+                        </div>
+
+                        <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-5 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Unlimited Tanpa FUP</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Speed Up to 100 Mbps</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Gaming Tournament & Server</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> High-End Gigabit Router</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> VIP Priority Technical Support</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="orderPackage('Paket Sultan Ultimate 100 Mbps', '500.000')" class="w-full bg-slate-900 hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors text-center">
+                        Pilih Paket
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Speed Test Simulation Tool Section -->
+    <section id="speedtest" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-cyan-400 font-bold uppercase tracking-wider text-xs bg-cyan-950 px-3 py-1 rounded-full border border-cyan-800">Simulasi Interaktif TKJ</span>
+                <h2 class="text-3xl font-extrabold mt-3">Tes Kecepatan Jaringan Nusantara</h2>
+                <p class="text-slate-400 text-sm mt-2">Uji perkiraan latensi, kecepatan unduh, dan unggah koneksi internet Anda secara real-time.</p>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl p-8 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-8">
+                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-700">
+                        <p class="text-xs text-slate-400 uppercase font-semibold">Ping Latensi</p>
+                        <p id="ping-val" class="text-3xl font-black text-yellow-400 mt-2">-- ms</p>
+                    </div>
+                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-700">
+                        <p class="text-xs text-slate-400 uppercase font-semibold">Kecepatan Download</p>
+                        <p id="download-val" class="text-3xl font-black text-emerald-400 mt-2">0.00 <span class="text-xs">Mbps</span></p>
+                    </div>
+                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-700">
+                        <p class="text-xs text-slate-400 uppercase font-semibold">Kecepatan Upload</p>
+                        <p id="upload-val" class="text-3xl font-black text-cyan-400 mt-2">0.00 <span class="text-xs">Mbps</span></p>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-900 rounded-full h-4 mb-8 overflow-hidden border border-slate-700 p-0.5">
+                    <div id="speed-progress" class="bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 h-full rounded-full w-0 transition-all duration-200"></div>
+                </div>
+
+                <div class="text-center">
+                    <button id="start-speedtest-btn" onclick="runSpeedTest()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-10 py-4 rounded-2xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-play mr-2"></i> Mulai Tes Kecepatan
+                    </button>
+                    <p id="speedtest-status" class="text-xs text-slate-400 mt-3 font-mono">Klik tombol untuk memulai simulasi pengujian bandwidth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak Bisnis Section -->
+    <section id="kontak" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Contact Details -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <span class="text-blue-600 font-bold uppercase tracking-wider text-xs bg-blue-100 px-3 py-1 rounded-full border border-blue-200">Hubungi Kami</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3">Kontak Bisnis & Layanan</h2>
+                        <p class="text-slate-600 mt-3 text-sm leading-relaxed">
+                            Apakah Anda memerlukan konsultasi pemasangan jaringan, pendaftaran paket, atau bantuan teknis? Tim Jalur Internet Nusantara siap membantu Anda.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-base">Alamat Kantor Ops</h4>
+                                <p class="text-slate-600 text-sm mt-1">Gedung Pusat Jaringan TKJ, Jl. Raya Nusantara No. 100, Indonesia</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-base">WhatsApp Official</h4>
+                                <p class="text-slate-600 text-sm mt-1">+62 812-3456-7890 (Respon Cepat 24 Jam)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-base">Email Support</h4>
+                                <p class="text-slate-600 text-sm mt-1">info@jalurinternetnusantara.id</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-base">Jam Operasional Kantor</h4>
+                                <p class="text-slate-600 text-sm mt-1">Senin - Minggu: 08:00 - 22:00 WIB (NOC 24/7)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Order / Inquiry Form -->
+                <div class="lg:col-span-7">
+                    <div class="bg-slate-50 border border-slate-200 rounded-3xl p-8 shadow-sm">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Formulir Pendaftaran & Bantuan</h3>
+                        <p class="text-slate-600 text-sm mb-6">Isi formulir di bawah ini untuk terhubung langsung dengan Customer Service via WhatsApp.</p>
+
+                        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Nama Lengkap</label>
+                                    <input type="text" id="form-name" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Nomor WhatsApp</label>
+                                    <input type="tel" id="form-phone" required placeholder="Contoh: 08123456789" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Pilihan Paket Internet</label>
+                                <select id="form-package" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white">
+                                    <option value="5 Mbps - Rp 100.000/bln">5 Mbps - Rp 100.000 / bulan</option>
+                                    <option value="10 Mbps - Rp 150.000/bln">10 Mbps - Rp 150.000 / bulan</option>
+                                    <option value="20 Mbps - Rp 200.000/bln" selected>20 Mbps - Rp 200.000 / bulan (Rekomendasi)</option>
+                                    <option value="50 Mbps - Rp 300.000/bln">50 Mbps - Rp 300.000 / bulan</option>
+                                    <option value="100 Mbps - Rp 500.000/bln">100 Mbps - Rp 500.000 / bulan</option>
+                                    <option value="Layanan Custom / Konsultasi">Layanan Khusus / Konsultasi Jaringan</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Alamat Lengkap Pemasangan</label>
+                                <textarea id="form-address" rows="3" required placeholder="Masukkan nama jalan, RT/RW, kelurahan, kecamatan, dan kota..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-600/20 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-xl"></i> Kirim Permohonan via WhatsApp
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
+                            <i class="fa-solid fa-wifi text-sm"></i>
+                        </div>
+                        <span class="text-white font-bold text-lg">Jalur Internet Nusantara</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Penyedia layanan internet berkecepatan tinggi dengan infrastruktur fiber optic terdepan untuk menghubungkan seluruh Indonesia.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Navigasi Cepat</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#beranda" class="hover:text-white transition-colors">Beranda</a></li>
+                        <li><a href="#tentang" class="hover:text-white transition-colors">Tentang Perusahaan</a></li>
+                        <li><a href="#layanan" class="hover:text-white transition-colors">Layanan Jaringan</a></li>
+                        <li><a href="#produk" class="hover:text-white transition-colors">Daftar Paket Internet</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Paket Internet</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><span>Paket 5 Mbps - Rp 100.000</span></li>
+                        <li><span>Paket 10 Mbps - Rp 150.000</span></li>
+                        <li><span>Paket 20 Mbps - Rp 200.000</span></li>
+                        <li><span>Paket 50 Mbps - Rp 300.000</span></li>
+                        <li><span>Paket 100 Mbps - Rp 500.000</span></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Projek Pembelajaran</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Website ini dirancang oleh Siswa Jurusan Teknik Komputer dan Jaringan (TKJ) sebagai simulasi operasional bisnis ISP modern.
+                    </p>
+                    <div class="mt-4 flex space-x-3 text-slate-400">
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook text-lg"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram text-lg"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-youtube text-lg"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-github text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-6 text-center text-xs text-slate-500">
+                &copy; 2026 Jalur Internet Nusantara. All Rights Reserved. Karya Siswa SMK Jurusan TKJ.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript Code -->
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Speed Test Simulation Logic
+        function runSpeedTest() {
+            const btn = document.getElementById('start-speedtest-btn');
+            const progress = document.getElementById('speed-progress');
+            const status = document.getElementById('speedtest-status');
+            const pingVal = document.getElementById('ping-val');
+            const downloadVal = document.getElementById('download-val');
+            const uploadVal = document.getElementById('upload-val');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            status.textContent = "Menguji latensi ping ke server terdekat...";
+            progress.style.width = "10%";
+
+            // Phase 1: Ping Test
+            setTimeout(() => {
+                const randomPing = Math.floor(Math.random() * 5) + 2; // 2-6 ms
+                pingVal.textContent = randomPing + " ms";
+                status.textContent = "Mengukur kecepatan unduh (Download Speed)...";
+                progress.style.width = "40%";
+
+                // Phase 2: Download Test Animation
+                let currentDl = 0;
+                const targetDl = (Math.random() * 10 + 90).toFixed(2); // ~90-100 Mbps
+                const dlInterval = setInterval(() => {
+                    currentDl += 4.5;
+                    if (currentDl >= targetDl) {
+                        currentDl = targetDl;
+                        clearInterval(dlInterval);
+                        
+                        // Phase 3: Upload Test
+                        status.textContent = "Mengukur kecepatan unggah (Upload Speed)...";
+                        progress.style.width = "75%";
+                        
+                        let currentUl = 0;
+                        const targetUl = (Math.random() * 5 + 92).toFixed(2);
+                        const ulInterval = setInterval(() => {
+                            currentUl += 5;
+                            if (currentUl >= targetUl) {
+                                currentUl = targetUl;
+                                clearInterval(ulInterval);
+
+                                // Finish
+                                progress.style.width = "100%";
+                                status.textContent = "Pengujian Selesai! Jaringan Anda Sangat Optimal.";
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                            }
+                            uploadVal.innerHTML = currentUl.toFixed(2) + ' <span class="text-xs">Mbps</span>';
+                        }, 50);
+                    }
+                    downloadVal.innerHTML = currentDl.toFixed(2) + ' <span class="text-xs">Mbps</span>';
+                }, 40);
+
+            }, 800);
+        }
+
+        // Direct WhatsApp Order Trigger from Pricing Cards
+        function orderPackage(packageName, price) {
+            const formPkg = document.getElementById('form-package');
+            // Select matching option
+            for (let option of formPkg.options) {
+                if (option.value.includes(packageName.split(' ')[2])) {
+                    option.selected = true;
+                    break;
+                }
+            }
+
+            // Scroll down to contact section smoothly
+            document.getElementById('kontak').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Handle Form Submission to WhatsApp Link
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const phone = document.getElementById('form-phone').value;
+            const pkg = document.getElementById('form-package').value;
+            const address = document.getElementById('form-address').value;
+
+            const text = `Halo Jalur Internet Nusantara, %0A%0ASaya ingin berlangganan internet dengan rincian berikut:%0A- *Nama*: ${encodeURIComponent(name)}%0A- *No. WA*: ${encodeURIComponent(phone)}%0A- *Pilihan Paket*: ${encodeURIComponent(pkg)}%0A- *Alamat Pemasangan*: ${encodeURIComponent(address)}%0A%0AMohon bantuan teknis untuk cek ketersediaan jaringan di lokasi saya. Terima kasih!`;
+
+            const waUrl = `https://wa.me/6281234567890?text=${text}`;
+            window.open(waUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
