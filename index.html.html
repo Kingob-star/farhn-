@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Absensi Masuk Sekolah - NISN</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-700 rounded-lg">
+                    <i data-lucide="school" class="w-7 h-7 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">ABSENSI SISWA SMK NEGERI 9 KAB. TANGERANG</h1>
+                    <p class="text-xs text-indigo-200">Absensi Siswa</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div id="live-clock" class="bg-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold shadow-inner flex items-center gap-2">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    <span id="clock-text">--:--:--</span>
+                </div>
+                <button onclick="openBkModal()" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow-sm cursor-pointer">
+                    <i data-lucide="shield-alert" class="w-4 h-4"></i> Panel Guru BK
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Kolom Kiri: Form Absensi & Informasi Siswa -->
+        <div class="lg:col-span-1 space-y-6">
+            <!-- Card Form Absen -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-lg font-semibold mb-4 flex items-center gap-2 text-indigo-600">
+                    <i data-lucide="user-check" class="w-5 h-5"></i> Masukkan NISN Siswa
+                </h2>
+                
+                <form id="attendance-form" onsubmit="handleAttendance(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Nomor Induk Siswa Nasional (NISN)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i data-lucide="hash" class="w-4 h-4"></i>
+                            </span>
+                            <input type="text" id="nisn-input" required placeholder="Masukkan NISN siswa..." 
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Contoh bawaan: <span class="font-semibold text-slate-600">1001</span>, <span class="font-semibold text-slate-600">1002</span>, <span class="font-semibold text-slate-600">1003</span>.</p>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm cursor-pointer">
+                        <i data-lucide="send" class="w-4 h-4"></i> Kirim Absensi Masuk
+                    </button>
+                </form>
+
+                <!-- Notifikasi / Feedback Box -->
+                <div id="alert-box" class="mt-4 hidden p-4 rounded-xl text-sm flex items-start gap-3">
+                    <div id="alert-icon-container"></div>
+                    <div>
+                        <h4 id="alert-title" class="font-semibold"></h4>
+                        <p id="alert-message" class="text-xs mt-0.5"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Panduan & Data Dummy -->
+            <div class="bg-indigo-50 border border-indigo-100 p-5 rounded-2xl">
+                <h3 class="text-sm font-semibold text-indigo-900 mb-2 flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i> Informasi Sistem
+                </h3>
+                <ul class="text-xs text-indigo-700 space-y-1.5 list-disc pl-4">
+                    <li>Batas jam masuk Tepat Waktu: pukul <strong class="text-indigo-900">07:00 WIB</strong>.</li>
+                    <li>Terlambat $\ge$ 3 kali $\rightarrow$ Mendapat <strong class="text-indigo-900">Surat Peringatan (SP)</strong> & diblokir.</li>
+                    <li>Siswa terblokir wajib melapor ke Guru BK untuk membuka akses absen & reset riwayat.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Tabel Riwayat Absensi -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-semibold flex items-center gap-2 text-indigo-600">
+                        <i data-lucide="clipboard-list" class="w-5 h-5"></i> Riwayat Absensi Masuk Hari Ini
+                    </h2>
+                    <p class="text-xs text-slate-400">Daftar siswa yang telah melakukan absensi masuk</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetAllData()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-lg transition border border-slate-200 cursor-pointer">
+                        Reset Data Demo
+                    </button>
+                    <span id="today-date-badge" class="bg-slate-100 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium"></span>
+                </div>
+            </div>
+
+            <!-- Tabel Data -->
+            <div class="overflow-x-auto flex-grow rounded-xl border border-slate-100">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
+                            <th class="p-3.5">NISN & Nama</th>
+                            <th class="p-3.5">Kelas & Jurusan</th>
+                            <th class="p-3.5">Waktu</th>
+                            <th class="p-3.5">Status</th>
+                            <th class="p-3.5">Keterangan / Konsekuensi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-table-body" class="divide-y divide-slate-100 text-sm">
+                        <!-- Diisi via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="empty-state" class="py-12 text-center hidden">
+                <i data-lucide="folder-open" class="w-10 h-10 mx-auto text-slate-300 mb-2"></i>
+                <p class="text-sm text-slate-400">Belum ada data absensi tercatat hari ini.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Guru BK & Manajemen Siswa -->
+    <div id="bk-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl border border-slate-200 animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="shield-check" class="text-indigo-600"></i> Panel Administrasi Guru BK
+                </h3>
+                <button onclick="closeBkModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Bagian Autentikasi PIN -->
+            <div id="bk-auth-section" class="space-y-4 py-4">
+                <p class="text-xs text-slate-500">Masukkan PIN Guru BK untuk mengakses panel pengelolaan sanksi siswa dan database siswa (PIN Default: <strong class="text-slate-700">bk123</strong>).</p>
+                <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">PIN Guru BK</label>
+                    <input type="password" id="bk-pin-input" placeholder="Masukkan PIN (default: bk123)" class="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button onclick="verifyBkPin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm cursor-pointer">
+                    Verifikasi PIN
+                </button>
+            </div>
+
+            <!-- Bagian Dashboard BK (Tabs: Buka Blokir & Manajemen Siswa) -->
+            <div id="bk-dashboard-section" class="hidden space-y-4 flex-grow overflow-y-auto pr-1">
+                
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-slate-200 text-sm font-medium">
+                    <button onclick="switchBkTab('unblock')" id="tab-btn-unblock" class="px-4 py-2 border-b-2 border-indigo-600 text-indigo-600 flex items-center gap-1.5 cursor-pointer">
+                        <i data-lucide="user-x" class="w-4 h-4"></i> Siswa Terblokir / SP
+                    </button>
+                    <button onclick="switchBkTab('students')" id="tab-btn-students" class="px-4 py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-1.5 cursor-pointer">
+                        <i data-lucide="users" class="w-4 h-4"></i> Data Seluruh Siswa
+                    </button>
+                </div>
+
+                <!-- TAB 1: Siswa Terblokir / SP -->
+                <div id="tab-content-unblock" class="space-y-3">
+                    <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-xs text-emerald-800">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                        <span>Siswa yang terkena SP (terlambat 3x) diblokir sistem. Pilih tombol buka blokir setelah siswa melapor.</span>
+                    </div>
+                    <div id="blocked-students-list" class="max-h-56 overflow-y-auto space-y-2 border border-slate-200 rounded-xl p-2 bg-slate-50">
+                        <!-- Diisi via JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: Data Seluruh Siswa (Tambah / Hapus Siswa) -->
+                <div id="tab-content-students" class="hidden space-y-4">
+                    <!-- Form Tambah / Edit Siswa Baru -->
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3">
+                        <h4 id="form-student-title" class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i> Tambah Data Siswa Baru
+                        </h4>
+                        <input type="hidden" id="edit-mode-nisn" value="">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1">NISN (Unik)</label>
+                                <input type="text" id="new-nisn" placeholder="Contoh: 1006" class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1">Nama Lengkap</label>
+                                <input type="text" id="new-name" placeholder="Nama siswa..." class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1">Kelas</label>
+                                <select id="new-kelas" class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500">
+                                    <option value="X">Kelas X</option>
+                                    <option value="XI">Kelas XI</option>
+                                    <option value="XII">Kelas XII</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1">Jurusan</label>
+                                <input type="text" id="new-jurusan" placeholder="Contoh: TKJ, Multimedia..." class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="saveStudentData()" id="btn-save-student" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 rounded-lg text-xs font-medium transition shadow-sm cursor-pointer">
+                                Simpan Data Siswa
+                            </button>
+                            <button onclick="resetStudentForm()" id="btn-cancel-edit" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer">
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Daftar List Siswa Terdaftar -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Daftar Seluruh Siswa</span>
+                            <span id="total-students-count" class="text-xs text-slate-400">0 siswa</span>
+                        </div>
+                        <div id="all-students-list" class="max-h-48 overflow-y-auto space-y-2 border border-slate-200 rounded-xl p-2 bg-slate-50">
+                            <!-- Diisi via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100">
+                    <button onclick="lockBkPanel()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 rounded-xl transition text-sm cursor-pointer">
+                        Kunci / Tutup Panel BK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Pengganti Alert Bawaan -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-200 text-center animate-in fade-in zoom-in duration-200">
+            <div id="modal-icon-container" class="w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full"></div>
+            <h4 id="modal-title" class="text-base font-bold text-slate-800 mb-1"></h4>
+            <p id="modal-message" class="text-xs text-slate-500 mb-5"></p>
+            <button onclick="closeCustomModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl text-xs transition cursor-pointer">
+                Mengerti / Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        &copy; 2026 Sistem Absensi Sekolah Berbasis NISN. Dilindungi peraturan tata tertib sekolah.
+    </footer>
+
+    <!-- JavaScript Aplikasi -->
+    <script>
+        // Data Default Siswa
+        let defaultStudentsDB = {
+            "1001": { nisn: "1001", name: "Ahmad Fauzan", kelas: "XI", jurusan: "Teknik Komputer & Jaringan", lateCount: 0, isBlocked: false },
+            "1002": { nisn: "1002", name: "Siti Rahmawati", kelas: "XI", jurusan: "Akuntansi & Keuangan Lembaga", lateCount: 0, isBlocked: false },
+            "1003": { nisn: "1003", name: "Budi Pratama", kelas: "X", jurusan: "Teknik Kendaraan Ringan", lateCount: 2, isBlocked: false },
+            "1004": { nisn: "1004", name: "Dewi Lestari", kelas: "XII", jurusan: "Multimedia", lateCount: 0, isBlocked: false },
+            "1005": { nisn: "1005", name: "Rizky Ramadhan", kelas: "X", jurusan: "Perbankan Syariah", lateCount: 0, isBlocked: false }
+        };
+
+        // Load Database dari localStorage atau default
+        let studentsDB = JSON.parse(localStorage.getItem('students_db')) || defaultStudentsDB;
+        let attendanceHistory = JSON.parse(localStorage.getItem('attendance_history')) || [];
+
+        // Inisialisasi Lucide Icons & Clock saat halaman dimuat
+        window.onload = function() {
+            lucide.createIcons();
+            updateClock();
+            setInterval(updateClock, 1000);
+            updateDateBadge();
+            renderAttendanceTable();
+        };
+
+        // Realtime Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock-text').innerText = `${hours}:${minutes}:${seconds} WIB`;
+        }
+
+        function updateDateBadge() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const now = new Date();
+            document.getElementById('today-date-badge').innerText = now.toLocaleDateString('id-ID', options);
+        }
+
+        // Fungsi Simpan State ke LocalStorage
+        function saveData() {
+            localStorage.setItem('attendance_history', JSON.stringify(attendanceHistory));
+            localStorage.setItem('students_db', JSON.stringify(studentsDB));
+        }
+
+        // Custom Modal Mengganti alert()
+        function showModal(title, message, type = 'info') {
+            const modal = document.getElementById('custom-modal');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+            const iconContainer = document.getElementById('modal-icon-container');
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+
+            if (type === 'success') {
+                iconContainer.className = "w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600";
+                iconContainer.innerHTML = '<i data-lucide="check-circle" class="w-6 h-6"></i>';
+            } else if (type === 'error') {
+                iconContainer.className = "w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-rose-100 text-rose-600";
+                iconContainer.innerHTML = '<i data-lucide="x-circle" class="w-6 h-6"></i>';
+            } else {
+                iconContainer.className = "w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full bg-amber-100 text-amber-600";
+                iconContainer.innerHTML = '<i data-lucide="info" class="w-6 h-6"></i>';
+            }
+
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // Handle Proses Absensi
+        function handleAttendance(event) {
+            event.preventDefault();
+            const nisnInput = document.getElementById('nisn-input').value.trim();
+
+            // Cek apakah siswa terdaftar di database
+            if (!studentsDB[nisnInput]) {
+                showAlert('error', 'NISN Tidak Ditemukan', 'NISN ini belum terdaftar di sistem sekolah. Harap daftarkan terlebih dahulu melalui Panel Guru BK.');
+                return;
+            }
+
+            let student = studentsDB[nisnInput];
+
+            // Cek apakah siswa diblokir karena SP
+            if (student.isBlocked) {
+                showAlert('error', 'Akses Absen Diblokir!', `Siswa ${student.name} telah terlambat 3 kali dan mendapat Surat Peringatan (SP). Silakan melapor ke Guru BK untuk membuka blokir.`);
+                return;
+            }
+
+            // Cek apakah sudah absen hari ini
+            const todayStr = new Date().toLocaleDateString('id-ID');
+            const alreadyCheckedIn = attendanceHistory.find(item => item.nisn === nisnInput && item.dateStr === todayStr);
+            if (alreadyCheckedIn) {
+                showAlert('warning', 'Sudah Melakukan Absen', `Siswa ${student.name} sudah melakukan absensi masuk hari ini pada pukul ${alreadyCheckedIn.time}.`);
+                return;
+            }
+
+            // Catat Waktu Absen Sekarang
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const dayStr = now.toLocaleDateString('id-ID', { weekday: 'long' });
+            
+            // Validasi Jam 07:00
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            let status = '';
+            let note = '';
+            let isLate = false;
+
+            if (currentHour < 7 || (currentHour === 7 && currentMinute === 0)) {
+                status = 'Tepat Waktu';
+                note = 'Masuk sebelum/tepat pukul 07:00';
+            } else {
+                status = 'Terlambat';
+                isLate = true;
+                student.lateCount += 1;
+
+                if (student.lateCount >= 3) {
+                    student.isBlocked = true;
+                    note = 'Terlambat ke-3! Mendapat Surat Peringatan (SP) & Akun Diblokir.';
+                } else {
+                    note = `Terlambat ke-${student.lateCount}. Harap datang lebih awal.`;
+                }
+            }
+
+            // Simpan record absensi
+            const record = {
+                nisn: student.nisn,
+                name: student.name,
+                kelas: student.kelas,
+                jurusan: student.jurusan,
+                day: dayStr,
+                dateStr: todayStr,
+                time: timeStr,
+                status: status,
+                note: note
+            };
+
+            attendanceHistory.unshift(record);
+            saveData();
+            renderAttendanceTable();
+
+            // Tampilkan alert
+            if (isLate) {
+                if (student.isBlocked) {
+                    showAlert('error', 'Terlambat & Terkena Sanksi SP!', `${student.name} terlambat untuk ke-3 kalinya. Akun diblokir, wajib lapor BK.`);
+                } else {
+                    showAlert('warning', 'Absen Tercatat (Terlambat)', `${student.name} berhasil absen pukul ${timeStr}. Status: Terlambat (${student.lateCount}/3).`);
+                }
+            } else {
+                showAlert('success', 'Absensi Berhasil!', `${student.name} berhasil melakukan absen tepat waktu.`);
+            }
+
+            document.getElementById('nisn-input').value = '';
+        }
+
+        // Helper Tampilkan Alert Box Form Absen
+        function showAlert(type, title, message) {
+            const box = document.getElementById('alert-box');
+            const titleEl = document.getElementById('alert-title');
+            const msgEl = document.getElementById('alert-message');
+            const iconContainer = document.getElementById('alert-icon-container');
+
+            box.className = "mt-4 p-4 rounded-xl text-sm flex items-start gap-3 border";
+            
+            if (type === 'success') {
+                box.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                iconContainer.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 mt-0.5"></i>';
+            } else if (type === 'warning') {
+                box.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-900');
+                iconContainer.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 mt-0.5"></i>';
+            } else {
+                box.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                iconContainer.innerHTML = '<i data-lucide="x-circle" class="w-5 h-5 text-rose-600 mt-0.5"></i>';
+            }
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            box.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // Render Tabel Riwayat Absensi
+        function renderAttendanceTable() {
+            const tbody = document.getElementById('attendance-table-body');
+            const emptyState = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+
+            if (attendanceHistory.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            attendanceHistory.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100 last:border-none";
+                
+                let badgeClass = item.status === 'Tepat Waktu' 
+                    ? 'bg-emerald-100 text-emerald-700 border-emerald-200' 
+                    : 'bg-rose-100 text-rose-700 border-rose-200';
+
+                tr.innerHTML = `
+                    <td class="p-3.5">
+                        <div class="font-semibold text-slate-800">${item.name}</div>
+                        <div class="text-xs text-slate-400">NISN: ${item.nisn}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <div class="text-slate-700 font-medium">${item.kelas}</div>
+                        <div class="text-xs text-slate-400 truncate max-w-[200px]" title="${item.jurusan}">${item.jurusan}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <div class="text-slate-700 font-medium">${item.time} WIB</div>
+                        <div class="text-xs text-slate-400">${item.day}, ${item.dateStr}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeClass}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="p-3.5 text-xs text-slate-500">
+                        ${item.note}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- Panel Guru BK & Manajemen Siswa Logic ---
+        function openBkModal() {
+            document.getElementById('bk-modal').classList.remove('hidden');
+            document.getElementById('bk-auth-section').classList.remove('hidden');
+            document.getElementById('bk-dashboard-section').classList.add('hidden');
+            document.getElementById('bk-pin-input').value = '';
+        }
+
+        function closeBkModal() {
+            document.getElementById('bk-modal').classList.add('hidden');
+        }
+
+        function verifyBkPin() {
+            const pin = document.getElementById('bk-pin-input').value.trim();
+            if (pin === 'bk123') {
+                document.getElementById('bk-auth-section').classList.add('hidden');
+                document.getElementById('bk-dashboard-section').classList.remove('hidden');
+                switchBkTab('unblock');
+            } else {
+                showModal('PIN Salah', 'PIN Guru BK salah! (Gunakan PIN default: bk123)', 'error');
+            }
+        }
+
+        function lockBkPanel() {
+            document.getElementById('bk-auth-section').classList.remove('hidden');
+            document.getElementById('bk-dashboard-section').classList.add('hidden');
+            document.getElementById('bk-pin-input').value = '';
+        }
+
+        function switchBkTab(tabName) {
+            const btnUnblock = document.getElementById('tab-btn-unblock');
+            const btnStudents = document.getElementById('tab-btn-students');
+            const contentUnblock = document.getElementById('tab-content-unblock');
+            const contentStudents = document.getElementById('tab-content-students');
+
+            if (tabName === 'unblock') {
+                btnUnblock.className = "px-4 py-2 border-b-2 border-indigo-600 text-indigo-600 flex items-center gap-1.5 font-medium cursor-pointer";
+                btnStudents.className = "px-4 py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-1.5 font-medium cursor-pointer";
+                contentUnblock.classList.remove('hidden');
+                contentStudents.classList.add('hidden');
+                renderBlockedStudents();
+            } else {
+                btnStudents.className = "px-4 py-2 border-b-2 border-indigo-600 text-indigo-600 flex items-center gap-1.5 font-medium cursor-pointer";
+                btnUnblock.className = "px-4 py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-1.5 font-medium cursor-pointer";
+                contentStudents.classList.remove('hidden');
+                contentUnblock.classList.add('hidden');
+                renderAllStudentsTable();
+            }
+            lucide.createIcons();
+        }
+
+        // Tab 1: List Siswa Terblokir / SP
+        function renderBlockedStudents() {
+            const container = document.getElementById('blocked-students-list');
+            container.innerHTML = '';
+
+            const blockedKeys = Object.keys(studentsDB).filter(nisn => studentsDB[nisn].isBlocked || studentsDB[nisn].lateCount > 0);
+
+            if (blockedKeys.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">Tidak ada siswa yang sedang diblokir atau memiliki catatan keterlambatan.</p>';
+                return;
+            }
+
+            blockedKeys.forEach(nisn => {
+                const s = studentsDB[nisn];
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200 text-xs shadow-sm";
+                
+                div.innerHTML = `
+                    <div>
+                        <div class="font-semibold text-slate-800">${s.name} (${s.nisn})</div>
+                        <div class="text-slate-500">${s.kelas} - ${s.jurusan}</div>
+                        <div class="mt-1 flex items-center gap-2">
+                            <span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-medium">Terlambat: ${s.lateCount}x</span>
+                            ${s.isBlocked ? '<span class="bg-red-600 text-white px-2 py-0.5 rounded font-bold">Status: SP & Diblokir</span>' : '<span class="text-slate-400">Aktif</span>'}
+                        </div>
+                    </div>
+                    <button onclick="unblockStudent('${nisn}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow-sm cursor-pointer">
+                        Buka Blokir & Reset
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function unblockStudent(nisn) {
+            if (studentsDB[nisn]) {
+                studentsDB[nisn].isBlocked = false;
+                studentsDB[nisn].lateCount = 0;
+                saveData();
+                renderBlockedStudents();
+                showModal('Berhasil', `Siswa ${studentsDB[nisn].name} berhasil dibuka blokirnya dan riwayat keterlambatan telah direset ke 0.`, 'success');
+            }
+        }
+
+        // Tab 2: Manajemen Seluruh Data Siswa (Tambah, Edit, Hapus)
+        function renderAllStudentsTable() {
+            const container = document.getElementById('all-students-list');
+            const countEl = document.getElementById('total-students-count');
+            container.innerHTML = '';
+
+            const keys = Object.keys(studentsDB);
+            countEl.innerText = `${keys.length} siswa`;
+
+            if (keys.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">Belum ada data siswa terdaftar.</p>';
+                return;
+            }
+
+            keys.forEach(nisn => {
+                const s = studentsDB[nisn];
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200 text-xs shadow-sm";
+                
+                div.innerHTML = `
+                    <div>
+                        <div class="font-semibold text-slate-800">${s.name} <span class="text-slate-400 font-normal">(${s.nisn})</span></div>
+                        <div class="text-slate-500">${s.kelas} - ${s.jurusan}</div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="editStudent('${nisn}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md font-medium transition cursor-pointer">
+                            Edit
+                        </button>
+                        <button onclick="deleteStudent('${nisn}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-2.5 py-1 rounded-md font-medium transition cursor-pointer">
+                            Hapus
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function saveStudentData() {
+            const nisnInput = document.getElementById('new-nisn').value.trim();
+            const nameInput = document.getElementById('new-name').value.trim();
+            const kelasInput = document.getElementById('new-kelas').value;
+            const jurusanInput = document.getElementById('new-jurusan').value.trim();
+            const editModeNisn = document.getElementById('edit-mode-nisn').value;
+
+            if (!nisnInput || !nameInput || !jurusanInput) {
+                showModal('Form Belum Lengkap', 'Semua kolom data siswa (NISN, Nama, dan Jurusan) wajib diisi dengan benar.', 'error');
+                return;
+            }
+
+            if (!editModeNisn && studentsDB[nisnInput]) {
+                showModal('NISN Sudah Ada', `NISN ${nisnInput} sudah terdaftar dalam database! Gunakan NISN lain.`, 'error');
+                return;
+            }
+
+            if (editModeNisn) {
+                if (editModeNisn !== nisnInput && studentsDB[nisnInput]) {
+                    showModal('NISN Digunakan', `NISN baru ${nisnInput} sudah digunakan siswa lain.`, 'error');
+                    return;
+                }
+                if (editModeNisn !== nisnInput) {
+                    studentsDB[nisnInput] = {
+                        nisn: nisnInput,
+                        name: nameInput,
+                        kelas: kelasInput,
+                        jurusan: jurusanInput,
+                        lateCount: studentsDB[editModeNisn].lateCount || 0,
+                        isBlocked: studentsDB[editModeNisn].isBlocked || false
+                    };
+                    delete studentsDB[editModeNisn];
+                } else {
+                    studentsDB[nisnInput].name = nameInput;
+                    studentsDB[nisnInput].kelas = kelasInput;
+                    studentsDB[nisnInput].jurusan = jurusanInput;
+                }
+                showModal('Pembaruan Berhasil', 'Data siswa berhasil diperbarui.', 'success');
+            } else {
+                studentsDB[nisnInput] = {
+                    nisn: nisnInput,
+                    name: nameInput,
+                    kelas: kelasInput,
+                    jurusan: jurusanInput,
+                    lateCount: 0,
+                    isBlocked: false
+                };
+                showModal('Penambahan Berhasil', 'Siswa baru berhasil ditambahkan ke dalam sistem.', 'success');
+            }
+
+            saveData();
+            resetStudentForm();
+            renderAllStudentsTable();
+        }
+
+        function editStudent(nisn) {
+            const s = studentsDB[nisn];
+            document.getElementById('new-nisn').value = s.nisn;
+            document.getElementById('new-name').value = s.name;
+            document.getElementById('new-kelas').value = s.kelas;
+            document.getElementById('new-jurusan').value = s.jurusan;
+            document.getElementById('edit-mode-nisn').value = s.nisn;
+
+            document.getElementById('form-student-title').innerHTML = `<i data-lucide="user-pen" class="w-4 h-4 text-indigo-600"></i> Edit Data Siswa: ${s.name}`;
+            document.getElementById('btn-save-student').innerText = 'Perbarui Data';
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function resetStudentForm() {
+            document.getElementById('new-nisn').value = '';
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-kelas').value = 'X';
+            document.getElementById('new-jurusan').value = '';
+            document.getElementById('edit-mode-nisn').value = '';
+
+            document.getElementById('form-student-title').innerHTML = `<i data-lucide="user-plus" class="w-4 h-4 text-indigo-600"></i> Tambah Data Siswa Baru`;
+            document.getElementById('btn-save-student').innerText = 'Simpan Data Siswa';
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function deleteStudent(nisn) {
+            if (studentsDB[nisn]) {
+                const studentName = studentsDB[nisn].name;
+                // Menggunakan confirm standar browser untuk keamanan konfirmasi penghapusan
+                if (window.confirm(`Yakin ingin menghapus data siswa ${studentName} (${nisn}) dari sistem?`)) {
+                    delete studentsDB[nisn];
+                    saveData();
+                    renderAllStudentsTable();
+                    showModal('Data Dihapus', `Data siswa ${studentName} berhasil dihapus dari sistem.`, 'success');
+                }
+            }
+        }
+
+        function resetAllData() {
+            if (window.confirm('Reset seluruh data demo riwayat absensi dan database siswa ke semula?')) {
+                localStorage.removeItem('attendance_history');
+                localStorage.removeItem('students_db');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
